@@ -1,15 +1,19 @@
 #include <stdio.h>
-
+#include <stdbool.h>
 // map[90] = {0}
 // 盤状態:横9*縦10 y*9+xと使う。0行目と9行目は番兵
 
-// dir[]={-10, -9, -8, -1, 1, 8, 9, 10};
+// dir[] = {-10, -9, -8, -1, 1, 8, 9, 10};
 // 盤を走査する場合、縦横斜め方向に向かうために足されるべき数
-int put, turn, all, done, pass, count, value, i,
-  map[90] = {0}, dir[] = {-10, -9, -8, -1, 1, 8, 9, 10};
+int put, turn, all, count, value, i;
+bool done, pass;
+int map[90] = {0}, dir[] = {-10, -9, -8, -1, 1, 8, 9, 10};
 
 void check() {
   if (map[put] == 0)
+    // それぞれの方向で走査して
+    // 裏返せるコマがあったらその数をallに追加・valueを基準のコマに戻し
+    // doneの値によってひっくり返す
     for (i = 0; i < 8; i++) {
       // 8方向走査
       // dir[i]の方向の相手のコマの数を確認
@@ -55,7 +59,7 @@ int main()
   turn = 1;
 
   // passをコントロールする変数
-  pass = 1;
+  pass = true;
 
   for (i = 1; i < 10; i++) {
     map[i * 9] = 3; // 9の倍数番目のマスに改行を入れる
@@ -64,28 +68,34 @@ int main()
   // ここからゲーム開始
   while (true) {
     // 毎回allとdoneを初期化
-    all = done = 0;
+    all = 0;
+    done = false;
 
     // 盤の表示
-    for (put = 9; put < 82; ++put) {
-      check();
-      printf("%.2s", &h[map[put]*2]);
+    for (put = 9; put < 82; put++) {
+      check(); // ここで全マスのひっくり返せる場所を計算している
+      printf("%.2s", &h[map[put] * 2]);
     }
 
-    if (all)
+    if (all) {
       // 1枚でも駒が置けた場合はcomは左上から走査
       // 置けた(=allの値が変わった)らturn終了
-      for (done = all = pass = put = 8; all == 8; check()) {
-        turn != 2 ? (scanf("%d %d", &put, &i), put += i * 9) : ++put;
+      for (done = pass = true, all = put = 8; all == 8; check()) {
+        if (turn == 2) {
+          put++;
+        } else {
+          scanf("%d %d", &put, &i);
+          put += i * 9;
+        }
       }
-
-    else if (pass)
+    } else if (pass) {
       // 駒は置けない
-      pass = 0;
+      pass = false;
       printf("pass");
-    else
+    } else {
       // 両者とも駒を置けないので終了
       break;
+    }
     // turn交代
     turn = 3 - turn;
   }
