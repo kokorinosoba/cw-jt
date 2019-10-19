@@ -57,6 +57,8 @@ int main()
   // player1からスタートさせる
   player = 1;
 
+  bool enemy_passed = false;
+
   for (int i = 1; i < 10; i++) {
     board[i * 9] = 3; // 9の倍数番目のマスに改行を入れる
   }
@@ -67,7 +69,7 @@ int main()
     // 毎回n_flipable_disksとneed_flipを初期化
     n_flipable_disks = 0;
     // 相手がパスしたか・石を返す必要があるか
-    bool enemy_passed = false, need_flip = false;
+    bool need_flip = false;
 
     // 盤の表示
     for (base_point = 9; base_point < 82; base_point++) {
