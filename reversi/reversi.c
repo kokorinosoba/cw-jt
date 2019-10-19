@@ -46,13 +46,28 @@ int main()
   // 1:1player
   // 2:2player
   // 3:改行
-  for (i = 1, map[41] = map[49] = 2; i < 10; map[i++ * 9] = 3) {
-    map[40] = map[50] = turn = pass = 1;
+
+  // 最初の石を置く
+  map[40] = map[50] = 1;
+  map[41] = map[49] = 2;
+
+  // player1からスタートさせる
+  turn = 1;
+
+  // passをコントロールする変数
+  pass = 1;
+
+  for (i = 1; i < 10; i++) {
+    map[i * 9] = 3; // 9の倍数番目のマスに改行を入れる
   }
 
-  for (;; all = done = 0) { // 毎回allとdoneを初期化
+  // ここからゲーム開始
+  while (true) {
+    // 毎回allとdoneを初期化
+    all = done = 0;
+
     // 盤の表示
-    for(put = 9; put < 82; ++put) {
+    for (put = 9; put < 82; ++put) {
       check();
       printf("%.2s", &h[map[put]*2]);
     }
@@ -60,13 +75,14 @@ int main()
     if (all)
       // 1枚でも駒が置けた場合はcomは左上から走査
       // 置けた(=allの値が変わった)らturn終了
-      for (done = all = pass = put = 8; all==8; check()) {
-        turn - 2 ? (scanf("%d %d", &put, &i), put += i * 9) : ++put;
+      for (done = all = pass = put = 8; all == 8; check()) {
+        turn != 2 ? (scanf("%d %d", &put, &i), put += i * 9) : ++put;
       }
 
     else if (pass)
       // 駒は置けない
-      pass=0, printf("pass");
+      pass = 0;
+      printf("pass");
     else
       // 両者とも駒を置けないので終了
       break;
