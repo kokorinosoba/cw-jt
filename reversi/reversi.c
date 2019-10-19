@@ -5,10 +5,10 @@
 
 // direction[] = {-10, -9, -8, -1, 1, 8, 9, 10};
 // 盤を走査する場合、縦横斜め方向に向かうために足されるべき数
-int base_point, player, n_flipable_disks;
+int player, n_flipable_disks;
 int board[90] = {0}, direction[] = {-10, -9, -8, -1, 1, 8, 9, 10};
 
-void check(bool need_flip) {
+void check(int base_point, bool need_flip) {
   if (board[base_point] == 0)
     // それぞれの方向で走査して
     // 裏返せるコマがあったらその数をn_flipable_disksに追加・checking_placeを基準のコマに戻し
@@ -57,29 +57,30 @@ int main()
   // player1からスタートさせる
   player = 1;
 
-  // enemy_passedをコントロールする変数
-  bool enemy_passed = true, need_flip;
-
   for (int i = 1; i < 10; i++) {
     board[i * 9] = 3; // 9の倍数番目のマスに改行を入れる
   }
 
   // ここからゲーム開始
   while (true) {
+    int base_point;
     // 毎回n_flipable_disksとneed_flipを初期化
     n_flipable_disks = 0;
-    need_flip = false;
+    // 相手がパスしたか・石を返す必要があるか
+    bool enemy_passed = false, need_flip = false;
 
     // 盤の表示
     for (base_point = 9; base_point < 82; base_point++) {
-      check(need_flip); // ここで全マスのひっくり返せる場所を計算している
+      check(base_point, need_flip); // ここで全マスのひっくり返せる場所を計算している
       printf("%.2s", &h[board[base_point] * 2]);
     }
 
     if (n_flipable_disks) {
       // 1枚でも駒が置けた場合はcomは左上から走査
       // 置けた(=n_flipable_disksの値が変わった)らターン終了
-      for (need_flip = enemy_passed = true, n_flipable_disks = 0, base_point = 8; n_flipable_disks == 0; check(need_flip)) {
+      need_flip = true;
+
+      for (n_flipable_disks = 0, base_point = 8; n_flipable_disks == 0; check(base_point, need_flip)) {
         if (player == 2) {
           base_point++;
         } else {
@@ -88,10 +89,10 @@ int main()
           base_point += tmp * 9;
         }
       }
-    } else if (enemy_passed) {
+    } else if (!enemy_passed) {
       // 駒は置けない
-      enemy_passed = false;
-      printf("enemy_passed");
+      enemy_passed = true;
+      printf("passed");
     } else {
       // 両者とも駒を置けないので終了
       break;
