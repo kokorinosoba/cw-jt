@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace reversi
+namespace reversiopc
 {
     class MainClass
     {
@@ -37,7 +37,7 @@ namespace reversi
                 {
                     need_flip = true;
 
-                    for (n_flipable_disks = 0, base_point = 8; n_flipable_disks == 0; check(base_point,need_flip))
+                    for (n_flipable_disks = 0, base_point = 8; n_flipable_disks == 0; check(base_point, need_flip))
                     {
                         if (player == 2)
                         {
