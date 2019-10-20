@@ -48,7 +48,7 @@ namespace reversi
                     if (player == 1)
                     {
                         // プレイヤーが人間の場合
-
+                        base_point = get_placeable_place(player);
                     }
                 }
                 else if (!enemy_passed)
@@ -103,6 +103,22 @@ namespace reversi
                 }
             }
             return n_enemy_disks;
+        }
+
+        public static int get_placeable_place(int player)
+        {
+            int base_point;
+
+            do
+            {
+                string input_string = Console.ReadLine();
+                string[] string_array = input_string.Split();
+                int column = int.Parse(string_array[0]);
+                int raw = int.Parse(string_array[1]);
+                base_point = column + raw * 9;
+            } while (eight_way_scanning(base_point, player) <= 0);
+
+            return base_point;
         }
     }
 }
