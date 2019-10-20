@@ -5,7 +5,7 @@ namespace reversi
     class MainClass
     {
         public static int player, n_flipable_disks;
-        public static int[] board = new int[90], direction = { -10, -9, -8, -1, 1, 8, 9, 10 };
+        public static int[] board = new int[91], direction = { -10, -9, -8, -1, 1, 8, 9, 10 };
         public static string disk_marks = "- o x \n";
 
         public static void Main(string[] args)
