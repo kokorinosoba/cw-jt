@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reversi", "reversi.csproj", "{4E367B8A-17D7-452A-8850-DCC3B617C50B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E367B8A-17D7-452A-8850-DCC3B617C50B}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{4E367B8A-17D7-452A-8850-DCC3B617C50B}.Debug|anycpu.Build.0 = Debug|anycpu
+		{4E367B8A-17D7-452A-8850-DCC3B617C50B}.Release|anycpu.ActiveCfg = Release|anycpu
+		{4E367B8A-17D7-452A-8850-DCC3B617C50B}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+EndGlobal
