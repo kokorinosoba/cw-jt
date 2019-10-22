@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace reversi
 {
@@ -49,6 +49,15 @@ namespace reversi
                     {
                         // プレイヤーが人間の場合
                         base_point = get_placeable_place(player);
+                        flip_disks(base_point, player);
+                    }
+                    else
+                    {
+                        for (n_flippable_disks = 0, base_point = 8; n_flippable_disks == 0; n_flippable_disks = eight_way_scanning(base_point, player))
+                        {
+                            base_point++;
+                        }
+                        flip_disks(base_point, player);
                     }
                 }
                 else if (!enemy_passed)
@@ -91,18 +100,23 @@ namespace reversi
         // 8方向を走査して、相手の石の個数を数える
         public static int eight_way_scanning(int base_point, int player)
         {
-            int n_enemy_disks = 0;
+            int n_flippable_disks = 0;
             if (board[base_point] == 0)
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    for (int scanning_point = base_point + direction[i]; board[scanning_point] == 3 - player; scanning_point += direction[i])
+                    int scanning_point, n_enemy_disks = 0;
+                    for (scanning_point = base_point + direction[i]; board[scanning_point] == 3 - player; scanning_point += direction[i])
                     {
                         n_enemy_disks++;
                     }
+                    if (n_enemy_disks > 0 && board[scanning_point] == player)
+                    {
+                        n_flippable_disks += n_enemy_disks;
+                    }
                 }
             }
-            return n_enemy_disks;
+            return n_flippable_disks;
         }
 
         public static int get_placeable_place(int player)
@@ -119,6 +133,30 @@ namespace reversi
             } while (eight_way_scanning(base_point, player) <= 0);
 
             return base_point;
+        }
+
+        public static void flip_disks(int base_point, int player)
+        {
+            if (board[base_point] == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    int scanning_point, n_enemy_disks = 0;
+                    for (scanning_point = base_point + direction[i]; board[scanning_point] == 3 - player; scanning_point += direction[i])
+                    {
+                        n_enemy_disks++;
+                    }
+                    if (n_enemy_disks > 0 && board[scanning_point] == player)
+                    {
+                        scanning_point = base_point;
+                        do
+                        {
+                            board[scanning_point] = player;
+                            scanning_point += direction[i];
+                        } while (board[scanning_point] != player);
+                    }
+                }
+            }
         }
     }
 }
