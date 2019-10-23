@@ -140,15 +140,15 @@ namespace reversi
         public static int get_placeable_place(int player)
         {
             int base_point;
+
             while (true)
             {
                 Console.Write("Enter place to put a disk: ");
                 string input_string = Console.ReadLine();
-                string[] string_array = input_string.Split();
-                int column = int.Parse(string_array[0]);
-                int raw = int.Parse(string_array[1]);
+                int column = int.Parse((input_string[0] - 'a' + 1).ToString());
+                int raw = int.Parse(input_string[1].ToString());
                 base_point = column + raw * 9;
-                if (eight_way_scanning(base_point, player) > 0)
+                if (eight_way_scanning(base_point, player) > 0) // 入力した場所に裏返せる石があった場合ループを抜ける
                 {
                     break;
                 }
