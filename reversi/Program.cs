@@ -86,10 +86,21 @@ namespace reversi
         public static void show_board()
         {
             string[] disk_marks = { "-", "o", "x", "\n" };
-            for (int base_point = 9; base_point < 82; base_point++)
+
+            Console.Write("  ");
+            for (int i = 0; i < 8; i++)
+            {
+                Console.Write(" {0}", (char)('a' + i));
+            }
+            for (int base_point = 9; base_point < 81; base_point++)
             {
                 Console.Write(" {0}", disk_marks[board[base_point]]);
+                if (base_point % 9 == 0)
+                {
+                    Console.Write(" {0}", base_point / 9);
+                }
             }
+            Console.WriteLine("\n");
         }
 
         // 盤の全体から裏返せる石を数える
@@ -131,7 +142,7 @@ namespace reversi
             int base_point;
             while (true)
             {
-                Console.WriteLine("石を置く場所：");
+                Console.Write("Enter place to put a disk: ");
                 string input_string = Console.ReadLine();
                 string[] string_array = input_string.Split();
                 int column = int.Parse(string_array[0]);
@@ -141,7 +152,7 @@ namespace reversi
                 {
                     break;
                 }
-                Console.WriteLine("石を置ける場所を入力してください");
+                Console.WriteLine("Disk cannot be placed there.");
             }
 
             return base_point;
