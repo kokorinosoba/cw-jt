@@ -58,21 +58,29 @@ namespace reversi
                     else // プレイヤーがNPCの場合
                     {
                         // 置ける場所を探索する
-                        for (n_flippable_disks = 0, base_point = 8; n_flippable_disks == 0; n_flippable_disks = eight_way_scanning(base_point, player))
+                        n_flippable_disks = 0;
+                        int max_flippable_disks = 0, best_place = 0;
+
+                        for (base_point = 9; base_point < 81; base_point++)
                         {
-                            base_point++;
+                            n_flippable_disks = eight_way_scanning(base_point, player);
+                            if (n_flippable_disks > max_flippable_disks)
+                            {
+                                max_flippable_disks = n_flippable_disks;
+                                best_place = base_point;
+                            }
                         }
-                        flip_disks(base_point, player);
+                        flip_disks(best_place, player);
                     }
+                    enemy_passed = false;
                 }
                 else if (!enemy_passed) // 石が置けないとき、かつ、相手がパスしていないとき
                 {
-                    enemy_passed = true;
                     Console.WriteLine("passed");
+                    enemy_passed = true;
                 }
                 else // 石が置けず、相手もパスしているとき
                 {
-
                     Console.WriteLine("end");
                     break;
                 }
@@ -144,13 +152,21 @@ namespace reversi
             while (true)
             {
                 Console.Write("Enter place to put a disk: ");
-                string input_string = Console.ReadLine();
-                int column = int.Parse((input_string[0] - 'a' + 1).ToString());
-                int raw = int.Parse(input_string[1].ToString());
-                base_point = column + raw * 9;
-                if (eight_way_scanning(base_point, player) > 0) // 入力した場所に裏返せる石があった場合ループを抜ける
+                try
                 {
-                    break;
+                    string input_string = Console.ReadLine();
+                    int column = int.Parse((input_string[0] - 'a' + 1).ToString());
+                    int raw = int.Parse(input_string[1].ToString());
+                    base_point = column + raw * 9;
+                    if (eight_way_scanning(base_point, player) > 0) // 入力した場所に裏返せる石があった場合ループを抜ける
+                    {
+                        break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid input");
+                    continue;
                 }
                 Console.WriteLine("Disk cannot be placed there.");
             }
