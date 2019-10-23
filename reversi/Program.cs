@@ -4,13 +4,18 @@ namespace reversi
 {
     class MainClass
     {
-        // 盤: 横9*縦10 y*9+xと使う。0行目と9行目は番兵
+        // ボード: 横9*縦10 y*9+xと使う。0行目と9行目は番兵
         public static int[] board = new int[91];
         // 走査する方向を記憶する配列
         public static readonly int[] direction = { -10, -9, -8, -1, 1, 8, 9, 10 };
 
         public static void Main(string[] args)
         {
+            // 0: 石なし
+            // 1: Player1
+            // 2: Player2
+            // 3: 改行
+
             // ボードの初期化
             board[40] = board[50] = 1;
             board[41] = board[49] = 2;
@@ -23,6 +28,8 @@ namespace reversi
 
             // ゲーム開始
             play_game();
+            // 結果を表示
+            show_result();
         }
 
         public static void play_game()
@@ -52,7 +59,7 @@ namespace reversi
                     if (player == 1) // プレイヤーが人間の場合
                     {
                         // 入力を求める
-                        base_point = get_placeable_place(player);
+                        base_point = input_place(player);
                         flip_disks(base_point, player);
                     }
                     else // プレイヤーがNPCの場合
@@ -61,6 +68,7 @@ namespace reversi
                         n_flippable_disks = 0;
                         int max_flippable_disks = 0, best_place = 0;
 
+                        // 裏返せる石が最大の個数になる場所を探索
                         for (base_point = 9; base_point < 81; base_point++)
                         {
                             n_flippable_disks = eight_way_scanning(base_point, player);
@@ -76,12 +84,14 @@ namespace reversi
                 }
                 else if (!enemy_passed) // 石が置けないとき、かつ、相手がパスしていないとき
                 {
-                    Console.WriteLine("passed");
+                    // パスをする
+                    Console.WriteLine("passed\n");
                     enemy_passed = true;
                 }
                 else // 石が置けず、相手もパスしているとき
                 {
-                    Console.WriteLine("end");
+                    // ゲーム終了
+                    Console.WriteLine("end\n");
                     break;
                 }
 
@@ -95,11 +105,13 @@ namespace reversi
         {
             string[] disk_marks = { "-", "o", "x", "\n" };
 
+            // ノーテーション用のアルファベットを表示
             Console.Write("  ");
             for (int i = 0; i < 8; i++)
             {
                 Console.Write(" {0}", (char)('a' + i));
             }
+            // 盤面を表示
             for (int base_point = 9; base_point < 81; base_point++)
             {
                 Console.Write(" {0}", disk_marks[board[base_point]]);
@@ -111,7 +123,7 @@ namespace reversi
             Console.WriteLine("\n");
         }
 
-        // 盤の全体から裏返せる石を数える
+        // 盤の全体を走査して、裏返せる石を数える
         public static int count_flippable_disks(int player)
         {
             int n_flippable_disks = 0;
@@ -131,11 +143,12 @@ namespace reversi
                 for (int i = 0; i < 8; i++)
                 {
                     int scanning_point, n_enemy_disks = 0;
+                    // 調べる方向に相手の石があったとき、n_enemy_disksを増やす
                     for (scanning_point = base_point + direction[i]; board[scanning_point] == 3 - player; scanning_point += direction[i])
                     {
                         n_enemy_disks++;
                     }
-                    if (n_enemy_disks > 0 && board[scanning_point] == player)
+                    if (n_enemy_disks > 0 && board[scanning_point] == player) // 相手の石が1枚以上あり、その上端が相手の駒だったとき
                     {
                         n_flippable_disks += n_enemy_disks;
                     }
@@ -144,8 +157,8 @@ namespace reversi
             return n_flippable_disks;
         }
 
-        // 石を置く場所の入力を求める関数
-        public static int get_placeable_place(int player)
+        // 石を置く場所の入力を求めるメソッド
+        public static int input_place(int player)
         {
             int base_point;
 
@@ -154,6 +167,7 @@ namespace reversi
                 Console.Write("Enter place to put a disk: ");
                 try
                 {
+                    // 座標を入力させ、それをボード上の位置に変換する
                     string input_string = Console.ReadLine();
                     int column = int.Parse((input_string[0] - 'a' + 1).ToString());
                     int raw = int.Parse(input_string[1].ToString());
@@ -179,6 +193,7 @@ namespace reversi
         {
             for (int i = 0; i < 8; i++)
             {
+                // 8方向走査とほとんど同じ
                 int scanning_point, n_enemy_disks = 0;
                 for (scanning_point = base_point + direction[i]; board[scanning_point] == 3 - player; scanning_point += direction[i])
                 {
@@ -189,10 +204,38 @@ namespace reversi
                     scanning_point = base_point;
                     do
                     {
+                        // ここで裏返す
                         board[scanning_point] = player;
                         scanning_point += direction[i];
                     } while (board[scanning_point] != player);
                 }
+            }
+        }
+
+        // ゲームの結果を表示する
+        public static void show_result()
+        {
+            int[] n_player_disks = new int[4];
+            // ボード上に石がいくつあるか数える
+            foreach (int disk in board)
+            {
+                n_player_disks[disk]++;
+            }
+            Console.WriteLine("------------------");
+            Console.WriteLine("      Result");
+            Console.WriteLine("------------------");
+            Console.WriteLine("You: {0}, Enemy: {1}", n_player_disks[1], n_player_disks[2]);
+            if (n_player_disks[1] > n_player_disks[2])
+            {
+                Console.WriteLine("You win!");
+            }
+            else if (n_player_disks[1] < n_player_disks[2])
+            {
+                Console.WriteLine("You lose...");
+            }
+            else
+            {
+                Console.WriteLine("Draw");
             }
         }
     }
