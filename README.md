@@ -44,5 +44,5 @@ cw-jt
 ```
 
 # References
-[オセロプログラム ～7行のC言語で書くコンピュータ対局～](https://uguisu.skr.jp/othello/7gyou.html)
-[Vue.js + Bootstrap4でポートフォリオサイトの雛形を作ろう！ - Qiita](https://qiita.com/masa08/items/3474d97a1283dfc275c9)
+1. [オセロプログラム ～7行のC言語で書くコンピュータ対局～](https://uguisu.skr.jp/othello/7gyou.html)
+1. [Vue.js + Bootstrap4でポートフォリオサイトの雛形を作ろう！ - Qiita](https://qiita.com/masa08/items/3474d97a1283dfc275c9)
