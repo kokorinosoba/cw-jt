@@ -15,6 +15,21 @@
 ```
 cw-jt
 ├── README.md
+├── portfolio  // 自己紹介ページ
+│   ├── README.md
+│   ├── build
+│   ├── config
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   │   ├── App.vue
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── main.js
+│   │   └── router
+│   ├── static
+│   └── test
 ├── reversi  // C#で作ったリバーシのプログラム
 │   ├── Program.cs  // 自分で書いたやつ
 │   ├── Properties
@@ -29,4 +44,5 @@ cw-jt
 ```
 
 # References
-[オセロプログラム ～7行のC言語で書くコンピュータ対局～](https://uguisu.skr.jp/othello/7gyou.html)
+1. [オセロプログラム ～7行のC言語で書くコンピュータ対局～](https://uguisu.skr.jp/othello/7gyou.html)
+1. [Vue.js + Bootstrap4でポートフォリオサイトの雛形を作ろう！ - Qiita](https://qiita.com/masa08/items/3474d97a1283dfc275c9)
