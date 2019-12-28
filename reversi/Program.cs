@@ -11,6 +11,7 @@ namespace reversi
 
         public static void Main(string[] args)
         {
+            game();
             // 0: 石なし
             // 1: Player1
             // 2: Player2
@@ -30,6 +31,12 @@ namespace reversi
             play_game();
             // 結果を表示
             show_result();
+        }
+
+        public static void game()
+        {
+            var board = new Board();
+            board.show();
         }
 
         public static void play_game()

@@ -1,28 +1,28 @@
-﻿using System;
+using System;
 namespace reversi
 {
     public class Cell
     {
-        public int disk;
+        public int state;
 
         public Cell()
         {
-
+            this.state = 0;
         }
 
-        public char diskMark()
+        public char getMark()
         {
-            return ' ';
+            return "o-x"[this.state + 1];
         }
 
-        public void putDisk(int diskColor)
+        public void put(int playerNumber)
         {
-
+            this.state = playerNumber;
         }
 
-        public void flipDisk()
+        public void flip()
         {
-
+            this.state *= -1;
         }
     }
 }
