@@ -68,28 +68,36 @@ namespace reversi
             {
                 for (int col = 0; col < 8; col++)
                 {
-                    nFlippableDisks += this.EightWayScanning(player, this.GetCell(row, col));
+                    Cell baseCell = this.GetCell(row, col);
+
+                    if (baseCell.CanPut())
+                    {
+                        nFlippableDisks += this.EightWayScanning(player, baseCell);
+                    }
                 }
             }
             return nFlippableDisks;
         }
 
         // ８方向に走査し、裏返せる石の数を返す
-        public int EightWayScanning(int player, Cell baseCell)
+        public int EightWayScanning(int player, Cell baseCell, bool flip = false)
         {
             int nFlippableDisks = 0;
 
             int[] directionRows = { -1, -1, -1, 0, 0, 1, 1, 1 };
             int[] directionCols = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-            if (baseCell.State == 0)
+            for (int i = 0; i < 8; i++)
             {
-                for (int i = 0; i < 8; i++)
-                {
-                    int directionRow = directionRows[i];
-                    int directionCol = directionCols[i];
+                int directionRow = directionRows[i];
+                int directionCol = directionCols[i];
 
-                    nFlippableDisks += this.OneWayScanning(player, baseCell, directionRow, directionCol);
+                int oneWayFlippableDisks = this.OneWayScanning(player, baseCell, directionRow, directionCol);
+                nFlippableDisks += oneWayFlippableDisks;
+
+                if (flip && oneWayFlippableDisks > 0)
+                {
+                    this.OneWayScanning(player, baseCell, directionRow, directionCol, flip);
                 }
             }
 
@@ -97,13 +105,17 @@ namespace reversi
         }
 
         // １方向に走査し、裏返せる石の数を返す
-        public int OneWayScanning(int player, Cell baseCell, int directionRow, int directionCol)
+        public int OneWayScanning(int player, Cell baseCell, int directionRow, int directionCol, bool flip = false)
         {
             int nEnemyDisks = 0;
             int row, col;
 
             for (row = baseCell.Row + directionRow, col = baseCell.Col + directionCol; this.GetCell(row, col) != null && this.GetCell(row, col).State == -player; row += directionRow, col += directionCol)
             {
+                if (flip)
+                {
+                    this.GetCell(row, col).Flip();
+                }
                 nEnemyDisks++;
             }            
 

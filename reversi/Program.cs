@@ -37,15 +37,27 @@ namespace reversi
         {
             Board board = new Board();
             int player = 1;
+            Player player1 = new Player( 1, true);
+            Player player2 = new Player(-1, true);
             bool enemyPassed = false;
 
             while (true)
             {
                 board.Show();
-                Console.WriteLine(board.CountFlippableDisks(1));
-                break;
-
-                if (!enemyPassed) // 石が置けないとき、かつ、相手がパスしていないとき
+                if (board.CountFlippableDisks(player) > 0) // 石を置く場所があるとき
+                {
+                    // 石を置く
+                    if (player == 1)
+                    {
+                        player1.Put(board);
+                    }
+                    else
+                    {
+                        player2.Put(board);
+                    }
+                    enemyPassed = false;
+                }
+                else if (!enemyPassed) // 石が置けないとき、かつ、相手がパスしていないとき
                 {
                     // パスをする
                     Console.WriteLine("passed\n");

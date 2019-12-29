@@ -28,5 +28,10 @@ namespace reversi
         {
             this.State *= -1;
         }
+
+        public bool CanPut()
+        {
+            return this.State == 0;
+        }
     }
 }
