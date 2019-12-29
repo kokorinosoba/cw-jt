@@ -126,5 +126,27 @@ namespace reversi
 
             return 0;
         }
+
+        public (int disksPlayer1, int disksPlayer2) CountDisks()
+        {
+            int disksPlayer1 = 0, disksPlayer2 = 0;
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    Cell baseCell = this.GetCell(row, col);
+                    if (baseCell.State == 1)
+                    {
+                        disksPlayer1++;
+                    }
+                    else if (baseCell.State == -1)
+                    {
+                        disksPlayer2++;
+                    }
+                }
+            }
+
+            return (disksPlayer1, disksPlayer2);
+        }
     }
 }
