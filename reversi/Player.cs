@@ -5,11 +5,13 @@ namespace reversi
     {
         int PlayerNumber;
         bool IsComputer;
+        int AlgorithmNumber;
 
-        public Player(int playerNumber, bool isComputer)
+        public Player(int playerNumber, bool isComputer, int algorithmNumber = 1)
         {
             this.PlayerNumber = playerNumber;
             this.IsComputer = isComputer;
+            this.AlgorithmNumber = algorithmNumber;
         }
 
         // 石を置く
@@ -32,6 +34,23 @@ namespace reversi
 
         // 裏返せる石が最大の個数になる場所を探索
         public Cell AiSearch(Board board)
+        {
+            Cell bestCell;
+
+            if (AlgorithmNumber == 1)
+            {
+                bestCell = Algorithm1(board);
+            }
+            else
+            {
+                bestCell = Algorithm2(board);
+            }
+
+            return bestCell;
+        }
+
+        // 裏返せる石が最大の個数になる場所を探索するアルゴリズム
+        public Cell Algorithm1(Board board)
         {
             int nFlippableDisks = 0, maxFlippableDisks = 0;
             Cell bestCell = board.GetCell(0, 0);
@@ -56,6 +75,23 @@ namespace reversi
             }
 
             return bestCell;
+        }
+
+        // 盤面評価によって最大のスコアになる場所を探索するアルゴリズム
+        public Cell Algorithm2(Board board)
+        {
+            int[,] score = {
+                             {  30, -12,   0,  -1,  -1,   0, -12,  30 },
+                             { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
+                             {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
+                             {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
+                             {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
+                             {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
+                             { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
+                             {  30, -12,   0,  -1,  -1,   0, -12,  30 },
+                           };
+
+            return new Cell(0, 0);
         }
 
         // 置ける場所の入力を求める
