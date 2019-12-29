@@ -25,7 +25,7 @@ namespace reversi
             int player = 1;
 
             Player player1 = new Player( 1, true, 1);
-            Player player2 = new Player(-1, true, 1);
+            Player player2 = new Player(-1, true, 2);
 
             // 相手がパスをしたかを保存しておく変数
             bool enemyPassed = false;
@@ -76,15 +76,15 @@ namespace reversi
             Console.WriteLine("------------------");
             Console.WriteLine("      Result");
             Console.WriteLine("------------------");
-            Console.WriteLine("You: {0}, Enemy: {1}", disksPlayer1, disksPlayer2);
+            Console.WriteLine("Player1: {0}, Player2: {1}", disksPlayer1, disksPlayer2);
 
             if (disksPlayer1 > disksPlayer2)
             {
-                Console.WriteLine("You win!");
+                Console.WriteLine("Player1 win!");
             }
             else if (disksPlayer1 < disksPlayer2)
             {
-                Console.WriteLine("You lose...");
+                Console.WriteLine("Player1 lose...");
             }
             else
             {

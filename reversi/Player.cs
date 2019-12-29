@@ -44,13 +44,12 @@ namespace reversi
         {
             Cell bestCell;
 
-            if (AlgorithmNumber == 1)
+            switch (AlgorithmNumber)
             {
-                bestCell = Algorithm1(board);
-            }
-            else
-            {
-                bestCell = Algorithm2(board);
+                case 1:  bestCell = Algorithm1(board); break;
+                case 2:  bestCell = Algorithm2(board); break;
+
+                default: bestCell = Algorithm1(board); break;
             }
 
             return bestCell;
@@ -87,18 +86,47 @@ namespace reversi
         // 盤面評価によって最大のスコアになる場所を探索するアルゴリズム
         public Cell Algorithm2(Board board)
         {
-            int[,] score = {
-                             {  30, -12,   0,  -1,  -1,   0, -12,  30 },
-                             { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
-                             {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
-                             {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
-                             {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
-                             {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
-                             { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
-                             {  30, -12,   0,  -1,  -1,   0, -12,  30 },
-                           };
+            int[,] scoreArray = {
+                {  30, -12,   0,  -1,  -1,   0, -12,  30 },
+                { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
+                {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
+                {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
+                {  -1,  -3,  -1,  -1,  -1,  -1,  -3,  -1 },
+                {   0,  -3,   0,  -1,  -1,   0,  -3,   0 },
+                { -12, -15,  -3,  -3,  -3,  -3, -15, -12 },
+                {  30, -12,   0,  -1,  -1,   0, -12,  30 },
+            };
 
-            return new Cell(0, 0);
+            int score = 0, maxScore = (int) -1e+9;
+            Cell bestCell = board.GetCell(0, 0);
+
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    Cell baseCell = board.GetCell(row, col);
+
+                    // 石を置ける場合のみ計算を行う
+                    if (baseCell != null && baseCell.CanPut())
+                    {
+                        List<Cell> flippableCells = board.EightWayScanning(this.PlayerNumber, baseCell);
+                        score = 0;
+
+                        foreach (Cell flippableCell in flippableCells)
+                        {
+                            score += scoreArray[flippableCell.Row, flippableCell.Col];
+                        }
+
+                        if (flippableCells.Count > 0 && score > maxScore)
+                        {
+                            maxScore = score;
+                            bestCell = baseCell;
+                        }
+                    }
+                }
+            }
+
+            return bestCell;
         }
 
         // 置ける場所の入力を求める
