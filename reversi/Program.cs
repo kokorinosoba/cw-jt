@@ -25,7 +25,7 @@ namespace reversi
             int player = 1;
 
             Player player1 = new Player( 1, true, 1);
-            Player player2 = new Player(-1, true, 2);
+            Player player2 = new Player(-1, true, 4);
 
             // 相手がパスをしたかを保存しておく変数
             bool enemyPassed = false;
