@@ -15,7 +15,7 @@ namespace reversi
                 this.cells.Add(new List<Cell>());
                 for (int col = 0; col < 8; col++)
                 {
-                    this.cells[row].Add(new Cell());
+                    this.cells[row].Add(new Cell(row, col));
                 }
             }
             this.cells[3][3].state = this.cells[4][4].state = -1;
