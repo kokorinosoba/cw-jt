@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace reversi
 {
     public class Player
@@ -29,7 +31,12 @@ namespace reversi
             }
 
             baseCell.Put(this.PlayerNumber);
-            board.EightWayScanning(this.PlayerNumber, baseCell, true);
+
+            List<Cell> flippableCells = board.EightWayScanning(this.PlayerNumber, baseCell);
+            foreach (Cell flippableCell in flippableCells)
+            {
+                flippableCell.Flip();
+            }
         }
 
         // 裏返せる石が最大の個数になる場所を探索
@@ -64,7 +71,7 @@ namespace reversi
                     // 石を置ける場合のみ計算を行う
                     if (baseCell != null && baseCell.CanPut())
                     {
-                        nFlippableDisks = board.EightWayScanning(this.PlayerNumber, baseCell);
+                        nFlippableDisks = board.EightWayScanning(this.PlayerNumber, baseCell).Count;
                         if (nFlippableDisks > maxFlippableDisks)
                         {
                             maxFlippableDisks = nFlippableDisks;
@@ -111,7 +118,7 @@ namespace reversi
                     baseCell = board.GetCell(row, col);
 
                     // 入力した場所に裏返せる石があった場合ループを抜ける
-                    if (baseCell != null && baseCell.CanPut() && board.EightWayScanning(this.PlayerNumber, baseCell) > 0)
+                    if (baseCell != null && baseCell.CanPut() && board.EightWayScanning(this.PlayerNumber, baseCell).Count > 0)
                     {
                         break;
                     }

@@ -62,7 +62,7 @@ namespace reversi
         // 盤全体でプレーヤーが置けるセルのリストを返す
         public List<Cell> GetPlaceableCells(int player)
         {
-            List<Cell> PlaceableCells = new List<Cell>();
+            List<Cell> placeableCells = new List<Cell>();
 
             for (int row = 0; row < 8; row++)
             {
@@ -70,19 +70,19 @@ namespace reversi
                 {
                     Cell baseCell = this.GetCell(row, col);
 
-                    if (baseCell.CanPut() && this.EightWayScanning(player, baseCell) > 0)
+                    if (baseCell.CanPut() && this.EightWayScanning(player, baseCell).Count > 0)
                     {
-                        PlaceableCells.Add(baseCell);
+                        placeableCells.Add(baseCell);
                     }
                 }
             }
-            return PlaceableCells;
+            return placeableCells;
         }
 
-        // ８方向に走査し、裏返せる石の数を返す
-        public int EightWayScanning(int player, Cell baseCell, bool flip = false)
+        // ８方向に走査し、裏返せるセルのリストを返す
+        public List<Cell> EightWayScanning(int player, Cell baseCell)
         {
-            int nFlippableDisks = 0;
+            List<Cell> flippableCells = new List<Cell>();
 
             int[] directionRows = { -1, -1, -1, 0, 0, 1, 1, 1 };
             int[] directionCols = { -1, 0, 1, -1, 1, -1, 0, 1 };
@@ -92,39 +92,30 @@ namespace reversi
                 int directionRow = directionRows[i];
                 int directionCol = directionCols[i];
 
-                int oneWayFlippableDisks = this.OneWayScanning(player, baseCell, directionRow, directionCol);
-                nFlippableDisks += oneWayFlippableDisks;
-
-                if (flip && oneWayFlippableDisks > 0)
-                {
-                    this.OneWayScanning(player, baseCell, directionRow, directionCol, flip);
-                }
+                List<Cell> oneWayFlippableCells = this.OneWayScanning(player, baseCell, directionRow, directionCol);
+                flippableCells.AddRange(oneWayFlippableCells);
             }
 
-            return nFlippableDisks;
+            return flippableCells;
         }
 
-        // １方向に走査し、裏返せる石の数を返す
-        public int OneWayScanning(int player, Cell baseCell, int directionRow, int directionCol, bool flip = false)
+        // １方向に走査し、裏返せるセルのリストを返す
+        public List<Cell> OneWayScanning(int player, Cell baseCell, int directionRow, int directionCol)
         {
-            int nEnemyDisks = 0;
+            List<Cell> flippableCells = new List<Cell>();
             int row, col;
 
             for (row = baseCell.Row + directionRow, col = baseCell.Col + directionCol; this.GetCell(row, col) != null && this.GetCell(row, col).State == -player; row += directionRow, col += directionCol)
             {
-                if (flip)
-                {
-                    this.GetCell(row, col).Flip();
-                }
-                nEnemyDisks++;
+                flippableCells.Add(this.GetCell(row, col));
             }            
 
             if (this.GetCell(row, col) != null && this.GetCell(row, col).State == player)
             {
-                return nEnemyDisks;
+                return flippableCells;
             }
 
-            return 0;
+            return new List<Cell>();
         }
 
         // それぞれのプレーヤーの石の数を数える
