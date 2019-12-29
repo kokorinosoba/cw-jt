@@ -11,7 +11,7 @@ namespace reversi
 
         public static void Main(string[] args)
         {
-            game();
+            PlayGame();
             // 0: 石なし
             // 1: Player1
             // 2: Player2
@@ -33,10 +33,34 @@ namespace reversi
             show_result();
         }
 
-        public static void game()
+        public static void PlayGame()
         {
-            var board = new Board();
-            board.show();
+            Board board = new Board();
+            int player = 1;
+            bool enemyPassed = false;
+
+            while (true)
+            {
+                board.Show();
+                Console.WriteLine(board.CountFlippableDisks(1));
+                break;
+
+                if (!enemyPassed) // 石が置けないとき、かつ、相手がパスしていないとき
+                {
+                    // パスをする
+                    Console.WriteLine("passed\n");
+                    enemyPassed = true;
+                }
+                else // 石が置けず、相手もパスしているとき
+                {
+                    // ゲーム終了
+                    Console.WriteLine("end\n");
+                    break;
+                }
+
+                // プレーヤーを交代する
+                player *= -1;
+            }
         }
 
         public static void play_game()

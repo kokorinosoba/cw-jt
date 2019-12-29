@@ -3,30 +3,30 @@ namespace reversi
 {
     public class Cell
     {
-        public int state;
-        public int row;
-        public int col;
+        public int State;
+        public int Row;
+        public int Col;
 
         public Cell(int row, int col)
         {
-            this.state = 0;
-            this.row = row;
-            this.col = col;
+            this.State = 0;
+            this.Row = row;
+            this.Col = col;
         }
 
-        public char getMark()
+        public char GetMark()
         {
-            return "o-x"[this.state + 1];
+            return "o-x"[this.State + 1];
         }
 
-        public void put(int playerNumber)
+        public void Put(int player)
         {
-            this.state = playerNumber;
+            this.State = player;
         }
 
-        public void flip()
+        public void Flip()
         {
-            this.state *= -1;
+            this.State *= -1;
         }
     }
 }
