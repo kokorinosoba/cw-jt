@@ -36,7 +36,7 @@ namespace reversi
                 // 盤を表示
                 board.Show();
 
-                if (board.CountFlippableDisks(player) > 0) // 石を置く場所があるとき
+                if (board.GetPlaceableCells(player).Count > 0) // 石を置く場所があるとき
                 {
                     // 石を置く
                     if (player == 1)

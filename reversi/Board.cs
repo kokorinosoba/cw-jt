@@ -59,10 +59,10 @@ namespace reversi
             return this.Cells[row][col];
         }
 
-        // 盤全体で裏返せる石の数を返す
-        public int CountFlippableDisks(int player)
+        // 盤全体でプレーヤーが置けるセルのリストを返す
+        public List<Cell> GetPlaceableCells(int player)
         {
-            int nFlippableDisks = 0;
+            List<Cell> PlaceableCells = new List<Cell>();
 
             for (int row = 0; row < 8; row++)
             {
@@ -70,13 +70,13 @@ namespace reversi
                 {
                     Cell baseCell = this.GetCell(row, col);
 
-                    if (baseCell.CanPut())
+                    if (baseCell.CanPut() && this.EightWayScanning(player, baseCell) > 0)
                     {
-                        nFlippableDisks += this.EightWayScanning(player, baseCell);
+                        PlaceableCells.Add(baseCell);
                     }
                 }
             }
-            return nFlippableDisks;
+            return PlaceableCells;
         }
 
         // ８方向に走査し、裏返せる石の数を返す
@@ -127,6 +127,7 @@ namespace reversi
             return 0;
         }
 
+        // それぞれのプレーヤーの石の数を数える
         public (int disksPlayer1, int disksPlayer2) CountDisks()
         {
             int disksPlayer1 = 0, disksPlayer2 = 0;
