@@ -24,8 +24,37 @@ namespace reversi
             // プレイヤー1から開始
             int player = 1;
 
-            Player player1 = new Player( 1, true, 1);
-            Player player2 = new Player(-1, true, 4);
+            int enemyAlgorithm;
+
+            while (true)
+            {
+                // 敵のアルゴリズムを選択
+                Console.Write("Please select the enemy algorithm(1-4): ");
+                try
+                {
+                    // 座標を入力させ、それをボード上の位置に変換する
+                    string inputString = Console.ReadLine();
+                    int selectedAlgorithm = int.Parse(inputString);
+                    if (0 < selectedAlgorithm && selectedAlgorithm < 5)
+                    {
+                        enemyAlgorithm = selectedAlgorithm;
+                        break;
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid input");
+                    continue;
+                }
+            }
+
+            // new Player(敵の番号, NPCかどうか, アルゴリズム)
+            Player player1 = new Player( 1, false, 1);
+            Player player2 = new Player(-1, true , enemyAlgorithm);
 
             // 相手がパスをしたかを保存しておく変数
             bool enemyPassed = false;

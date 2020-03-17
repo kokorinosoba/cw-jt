@@ -254,7 +254,7 @@ namespace reversi
 
             while (true)
             {
-                Console.Write("Enter place to put a disk: ");
+                Console.Write("Enter the place to put a disk: ");
                 try
                 {
                     // 座標を入力させ、それをボード上の位置に変換する
